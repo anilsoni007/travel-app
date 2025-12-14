@@ -22,14 +22,18 @@ function FlightSearch() {
       return;
     }
     setLoading(true);
+    console.log('Searching with params:', searchParams);
     try {
       const response = await flightAPI.search(searchParams);
+      console.log('API Response:', response);
+      console.log('Flights data:', response.data);
       setFlights(response.data || []);
-      if (response.data.length === 0) {
+      if (!response.data || response.data.length === 0) {
         alert('No flights found. Try different search criteria.');
       }
     } catch (err) {
       console.error('Search error:', err);
+      console.error('Error response:', err.response);
       alert('Search failed: ' + (err.response?.data?.error || err.message));
     } finally {
       setLoading(false);
