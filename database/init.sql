@@ -65,14 +65,23 @@ CREATE TABLE payments (
 INSERT INTO users (email, password, first_name, last_name, phone) VALUES
 ('test@example.com', '$2a$10$rXKv7VZJZJZJZJZJZJZJZOqKqKqKqKqKqKqKqKqKqKqKqKqKqKqKqK', 'Test', 'User', '1234567890');
 
--- Insert sample flights (using future dates that auto-update)
+-- Insert sample flights (multiple days with dynamic pricing)
 INSERT INTO flights (airline, flight_number, origin, destination, departure_time, arrival_time, price, available_seats) VALUES
--- Domestic Indian Routes
-('Air India', 'AI101', 'Mumbai', 'Delhi', CURRENT_DATE + INTERVAL '1 day' + TIME '08:00:00', CURRENT_DATE + INTERVAL '1 day' + TIME '10:30:00', 120.00, 150),
-('IndiGo', 'IG202', 'Delhi', 'Mumbai', CURRENT_DATE + INTERVAL '1 day' + TIME '14:00:00', CURRENT_DATE + INTERVAL '1 day' + TIME '16:30:00', 120.00, 180),
-('SpiceJet', 'SJ303', 'Mumbai', 'Bangalore', CURRENT_DATE + INTERVAL '2 days' + TIME '06:30:00', CURRENT_DATE + INTERVAL '2 days' + TIME '08:15:00', 110.00, 160),
+-- TODAY (Higher prices)
+('Air India', 'AI101', 'Mumbai', 'Delhi', CURRENT_DATE + TIME '08:00:00', CURRENT_DATE + TIME '10:30:00', 180.00, 150),
+('IndiGo', 'IG202', 'Delhi', 'Mumbai', CURRENT_DATE + TIME '14:00:00', CURRENT_DATE + TIME '16:30:00', 180.00, 180),
+('SpiceJet', 'SJ303', 'Mumbai', 'Bangalore', CURRENT_DATE + TIME '06:30:00', CURRENT_DATE + TIME '08:15:00', 165.00, 160),
+('Air India', 'AI105', 'Delhi', 'Bangalore', CURRENT_DATE + TIME '11:00:00', CURRENT_DATE + TIME '13:45:00', 225.00, 180),
+-- TOMORROW (Higher prices)
+('Air India', 'AI101T', 'Mumbai', 'Delhi', CURRENT_DATE + INTERVAL '1 day' + TIME '08:00:00', CURRENT_DATE + INTERVAL '1 day' + TIME '10:30:00', 150.00, 150),
+('IndiGo', 'IG202T', 'Delhi', 'Mumbai', CURRENT_DATE + INTERVAL '1 day' + TIME '14:00:00', CURRENT_DATE + INTERVAL '1 day' + TIME '16:30:00', 150.00, 180),
+('SpiceJet', 'SJ303T', 'Mumbai', 'Bangalore', CURRENT_DATE + INTERVAL '1 day' + TIME '06:30:00', CURRENT_DATE + INTERVAL '1 day' + TIME '08:15:00', 138.00, 160),
+('Air India', 'AI105T', 'Delhi', 'Bangalore', CURRENT_DATE + INTERVAL '1 day' + TIME '11:00:00', CURRENT_DATE + INTERVAL '1 day' + TIME '13:45:00', 188.00, 180),
+-- REGULAR PRICES (2+ days out)
+('Air India', 'AI101R', 'Mumbai', 'Delhi', CURRENT_DATE + INTERVAL '2 days' + TIME '08:00:00', CURRENT_DATE + INTERVAL '2 days' + TIME '10:30:00', 120.00, 150),
+('IndiGo', 'IG202R', 'Delhi', 'Mumbai', CURRENT_DATE + INTERVAL '3 days' + TIME '14:00:00', CURRENT_DATE + INTERVAL '3 days' + TIME '16:30:00', 120.00, 180),
+('SpiceJet', 'SJ303R', 'Mumbai', 'Bangalore', CURRENT_DATE + INTERVAL '4 days' + TIME '06:30:00', CURRENT_DATE + INTERVAL '4 days' + TIME '08:15:00', 110.00, 160),
 ('Vistara', 'UK404', 'Bangalore', 'Mumbai', CURRENT_DATE + INTERVAL '2 days' + TIME '18:00:00', CURRENT_DATE + INTERVAL '2 days' + TIME '19:45:00', 110.00, 140),
-('Air India', 'AI105', 'Delhi', 'Bangalore', CURRENT_DATE + INTERVAL '1 day' + TIME '11:00:00', CURRENT_DATE + INTERVAL '1 day' + TIME '13:45:00', 150.00, 180),
 ('IndiGo', 'IG206', 'Bangalore', 'Delhi', CURRENT_DATE + INTERVAL '3 days' + TIME '09:00:00', CURRENT_DATE + INTERVAL '3 days' + TIME '11:45:00', 150.00, 170),
 ('SpiceJet', 'SJ307', 'Mumbai', 'Kolkata', CURRENT_DATE + INTERVAL '1 day' + TIME '07:00:00', CURRENT_DATE + INTERVAL '1 day' + TIME '09:30:00', 140.00, 150),
 ('Vistara', 'UK408', 'Kolkata', 'Mumbai', CURRENT_DATE + INTERVAL '2 days' + TIME '15:00:00', CURRENT_DATE + INTERVAL '2 days' + TIME '17:30:00', 140.00, 160),
@@ -110,7 +119,32 @@ INSERT INTO flights (airline, flight_number, origin, destination, departure_time
 ('Air India', 'AI801', 'Mumbai', 'Tokyo', CURRENT_DATE + INTERVAL '1 day' + TIME '02:00:00', CURRENT_DATE + INTERVAL '1 day' + TIME '14:30:00', 780.00, 280),
 ('Air India', 'AI802', 'Tokyo', 'Mumbai', CURRENT_DATE + INTERVAL '3 days' + TIME '16:00:00', CURRENT_DATE + INTERVAL '4 days' + TIME '00:30:00', 780.00, 270),
 ('Qantas', 'QF501', 'Delhi', 'Sydney', CURRENT_DATE + INTERVAL '1 day' + TIME '22:00:00', CURRENT_DATE + INTERVAL '2 days' + TIME '18:30:00', 950.00, 300),
-('Qantas', 'QF502', 'Sydney', 'Delhi', CURRENT_DATE + INTERVAL '3 days' + TIME '08:00:00', CURRENT_DATE + INTERVAL '3 days' + TIME '20:30:00', 950.00, 290);
+('Qantas', 'QF502', 'Sydney', 'Delhi', CURRENT_DATE + INTERVAL '3 days' + TIME '08:00:00', CURRENT_DATE + INTERVAL '3 days' + TIME '20:30:00', 950.00, 290),
+-- Additional connecting routes
+('IndiGo', 'IG301', 'Pune', 'Jaipur', CURRENT_DATE + INTERVAL '1 day' + TIME '10:00:00', CURRENT_DATE + INTERVAL '1 day' + TIME '12:30:00', 140.00, 150),
+('SpiceJet', 'SJ401', 'Jaipur', 'Pune', CURRENT_DATE + INTERVAL '2 days' + TIME '15:00:00', CURRENT_DATE + INTERVAL '2 days' + TIME '17:30:00', 140.00, 140),
+('Air India', 'AI201', 'Chennai', 'Mumbai', CURRENT_DATE + INTERVAL '1 day' + TIME '08:00:00', CURRENT_DATE + INTERVAL '1 day' + TIME '10:15:00', 130.00, 160),
+('IndiGo', 'IG302', 'Mumbai', 'Chennai', CURRENT_DATE + INTERVAL '2 days' + TIME '16:00:00', CURRENT_DATE + INTERVAL '2 days' + TIME '18:15:00', 130.00, 170),
+('Vistara', 'UK501', 'Kolkata', 'Bangalore', CURRENT_DATE + INTERVAL '1 day' + TIME '07:00:00', CURRENT_DATE + INTERVAL '1 day' + TIME '09:30:00', 150.00, 140),
+('SpiceJet', 'SJ501', 'Bangalore', 'Kolkata', CURRENT_DATE + INTERVAL '2 days' + TIME '19:00:00', CURRENT_DATE + INTERVAL '2 days' + TIME '21:30:00', 150.00, 150),
+('Air India', 'AI301', 'Hyderabad', 'Delhi', CURRENT_DATE + INTERVAL '1 day' + TIME '06:00:00', CURRENT_DATE + INTERVAL '1 day' + TIME '08:30:00', 140.00, 160),
+('IndiGo', 'IG401', 'Delhi', 'Hyderabad', CURRENT_DATE + INTERVAL '2 days' + TIME '17:00:00', CURRENT_DATE + INTERVAL '2 days' + TIME '19:30:00', 140.00, 170),
+('Vistara', 'UK601', 'Ahmedabad', 'Bangalore', CURRENT_DATE + INTERVAL '1 day' + TIME '09:00:00', CURRENT_DATE + INTERVAL '1 day' + TIME '11:15:00', 130.00, 130),
+('SpiceJet', 'SJ601', 'Bangalore', 'Ahmedabad', CURRENT_DATE + INTERVAL '2 days' + TIME '14:00:00', CURRENT_DATE + INTERVAL '2 days' + TIME '16:15:00', 130.00, 140),
+('Air India', 'AI401', 'Goa', 'Delhi', CURRENT_DATE + INTERVAL '1 day' + TIME '11:00:00', CURRENT_DATE + INTERVAL '1 day' + TIME '13:30:00', 160.00, 120),
+('IndiGo', 'IG501', 'Delhi', 'Goa', CURRENT_DATE + INTERVAL '2 days' + TIME '08:00:00', CURRENT_DATE + INTERVAL '2 days' + TIME '10:30:00', 160.00, 130),
+('Vistara', 'UK701', 'Kochi', 'Mumbai', CURRENT_DATE + INTERVAL '1 day' + TIME '13:00:00', CURRENT_DATE + INTERVAL '1 day' + TIME '15:15:00', 120.00, 110),
+('SpiceJet', 'SJ701', 'Mumbai', 'Kochi', CURRENT_DATE + INTERVAL '2 days' + TIME '10:00:00', CURRENT_DATE + INTERVAL '2 days' + TIME '12:15:00', 120.00, 120),
+('Air India', 'AI501', 'Jaipur', 'Mumbai', CURRENT_DATE + INTERVAL '1 day' + TIME '12:00:00', CURRENT_DATE + INTERVAL '1 day' + TIME '14:15:00', 130.00, 140),
+('IndiGo', 'IG601', 'Mumbai', 'Jaipur', CURRENT_DATE + INTERVAL '2 days' + TIME '18:00:00', CURRENT_DATE + INTERVAL '2 days' + TIME '20:15:00', 130.00, 150),
+('Vistara', 'UK801', 'Pune', 'Bangalore', CURRENT_DATE + INTERVAL '1 day' + TIME '07:30:00', CURRENT_DATE + INTERVAL '1 day' + TIME '08:45:00', 90.00, 120),
+('SpiceJet', 'SJ801', 'Bangalore', 'Pune', CURRENT_DATE + INTERVAL '2 days' + TIME '20:00:00', CURRENT_DATE + INTERVAL '2 days' + TIME '21:15:00', 90.00, 130),
+('Air India', 'AI601', 'Chennai', 'Bangalore', CURRENT_DATE + INTERVAL '1 day' + TIME '09:30:00', CURRENT_DATE + INTERVAL '1 day' + TIME '10:30:00', 80.00, 140),
+('IndiGo', 'IG701', 'Bangalore', 'Chennai', CURRENT_DATE + INTERVAL '2 days' + TIME '21:00:00', CURRENT_DATE + INTERVAL '2 days' + TIME '22:00:00', 80.00, 150),
+('Vistara', 'UK901', 'Kolkata', 'Delhi', CURRENT_DATE + INTERVAL '1 day' + TIME '06:30:00', CURRENT_DATE + INTERVAL '1 day' + TIME '09:00:00', 140.00, 160),
+('SpiceJet', 'SJ901', 'Delhi', 'Kolkata', CURRENT_DATE + INTERVAL '2 days' + TIME '19:30:00', CURRENT_DATE + INTERVAL '2 days' + TIME '22:00:00', 140.00, 170),
+('Air India', 'AI701', 'Hyderabad', 'Bangalore', CURRENT_DATE + INTERVAL '1 day' + TIME '08:30:00', CURRENT_DATE + INTERVAL '1 day' + TIME '09:30:00', 70.00, 130),
+('IndiGo', 'IG801', 'Bangalore', 'Hyderabad', CURRENT_DATE + INTERVAL '2 days' + TIME '22:00:00', CURRENT_DATE + INTERVAL '2 days' + TIME '23:00:00', 70.00, 140);
 
 -- Insert sample hotels
 INSERT INTO hotels (name, location, address, star_rating, price_per_night, available_rooms, amenities) VALUES

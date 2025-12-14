@@ -82,12 +82,13 @@ function FlightSearch() {
               </select>
             </div>
             <div className="form-group">
-              <label>📅 Date</label>
+              <label>📅 Date (Optional)</label>
               <input 
                 type="date" 
                 value={searchParams.date} 
                 onChange={(e) => setSearchParams({...searchParams, date: e.target.value})} 
                 min={new Date().toISOString().split('T')[0]}
+                placeholder="Any date"
               />
             </div>
           </div>
