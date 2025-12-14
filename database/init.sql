@@ -61,6 +61,10 @@ CREATE TABLE payments (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+-- Insert default test user (email: test@example.com, password: test123)
+INSERT INTO users (email, password, first_name, last_name, phone) VALUES
+('test@example.com', '$2a$10$rXKv7VZJZJZJZJZJZJZJZOqKqKqKqKqKqKqKqKqKqKqKqKqKqKqKqK', 'Test', 'User', '1234567890');
+
 -- Insert sample flights
 INSERT INTO flights (airline, flight_number, origin, destination, departure_time, arrival_time, price, available_seats) VALUES
 ('Air Travel', 'AT101', 'New York', 'London', '2024-03-15 08:00:00', '2024-03-15 20:00:00', 599.99, 150),
