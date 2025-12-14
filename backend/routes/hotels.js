@@ -10,7 +10,7 @@ router.get('/search', async (req, res) => {
     const params = [];
     
     if (location) {
-      params.push(location);
+      params.push(`%${location}%`);
       query += ` AND location ILIKE $${params.length}`;
     }
     if (minPrice) {

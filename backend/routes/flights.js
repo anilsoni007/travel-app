@@ -10,11 +10,11 @@ router.get('/search', async (req, res) => {
     const params = [];
     
     if (origin) {
-      params.push(origin);
+      params.push(`%${origin}%`);
       query += ` AND origin ILIKE $${params.length}`;
     }
     if (destination) {
-      params.push(destination);
+      params.push(`%${destination}%`);
       query += ` AND destination ILIKE $${params.length}`;
     }
     if (date) {
