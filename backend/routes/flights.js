@@ -6,7 +6,7 @@ const router = express.Router();
 router.get('/search', async (req, res) => {
   try {
     const { origin, destination, date } = req.query;
-    let query = 'SELECT * FROM flights WHERE 1=1';
+    let query = 'SELECT * FROM flights WHERE departure_time >= CURRENT_TIMESTAMP';
     const params = [];
     
     if (origin) {
@@ -22,7 +22,17 @@ router.get('/search', async (req, res) => {
       query += ` AND DATE(departure_time) = $${params.length}`;
     }
     
+    query += ' ORDER BY departure_time LIMIT 50';
     const result = await pool.query(query, params);
+    res.json(result.rows);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+router.get('/all', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM flights ORDER BY departure_time LIMIT 20');
     res.json(result.rows);
   } catch (error) {
     res.status(500).json({ error: error.message });

@@ -6,7 +6,7 @@ const router = express.Router();
 router.get('/search', async (req, res) => {
   try {
     const { location, minPrice, maxPrice, starRating } = req.query;
-    let query = 'SELECT * FROM hotels WHERE 1=1';
+    let query = 'SELECT * FROM hotels WHERE available_rooms > 0';
     const params = [];
     
     if (location) {
@@ -26,7 +26,17 @@ router.get('/search', async (req, res) => {
       query += ` AND star_rating = $${params.length}`;
     }
     
+    query += ' ORDER BY star_rating DESC, price_per_night LIMIT 50';
     const result = await pool.query(query, params);
+    res.json(result.rows);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+router.get('/all', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM hotels ORDER BY star_rating DESC LIMIT 20');
     res.json(result.rows);
   } catch (error) {
     res.status(500).json({ error: error.message });
