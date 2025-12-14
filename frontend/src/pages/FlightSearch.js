@@ -3,10 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { flightAPI, bookingAPI } from '../services/api';
 
 const CITIES = [
-  'Mumbai', 'Delhi', 'Bangalore', 'Kolkata', 'Chennai', 'Hyderabad', 'Pune', 'Ahmedabad',
-  'Jaipur', 'Goa', 'Kochi', 'Lucknow', 'Chandigarh', 'Indore', 'Bhopal',
-  'London', 'New York', 'Dubai', 'Singapore', 'Paris', 'Tokyo', 'Bangkok', 'Sydney',
-  'Los Angeles', 'Hong Kong', 'Toronto', 'Amsterdam', 'Barcelona', 'Rome'
+  'Mumbai', 'Delhi', 'Bangalore', 'Dubai', 'Singapore', 
+  'London', 'New York', 'Paris', 'Tokyo', 'Sydney'
 ];
 
 function FlightSearch() {

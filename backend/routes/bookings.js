@@ -8,13 +8,20 @@ router.post('/', authMiddleware, async (req, res) => {
   try {
     const { booking_type, flight_id, hotel_id, check_in_date, check_out_date, total_price } = req.body;
     
+    // Verify user exists
+    const userCheck = await pool.query('SELECT id FROM users WHERE id = $1', [req.user.id]);
+    if (userCheck.rows.length === 0) {
+      return res.status(404).json({ error: 'User not found. Please login again.' });
+    }
+    
     const result = await pool.query(
-      'INSERT INTO bookings (user_id, booking_type, flight_id, hotel_id, check_in_date, check_out_date, total_price) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *',
-      [req.user.id, booking_type, flight_id, hotel_id, check_in_date, check_out_date, total_price]
+      'INSERT INTO bookings (user_id, booking_type, flight_id, hotel_id, check_in_date, check_out_date, total_price, status) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *',
+      [req.user.id, booking_type, flight_id, hotel_id, check_in_date, check_out_date, total_price, 'confirmed']
     );
     
     res.status(201).json(result.rows[0]);
   } catch (error) {
+    console.error('Booking error:', error);
     res.status(400).json({ error: error.message });
   }
 });
